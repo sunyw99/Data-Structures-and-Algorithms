@@ -1,0 +1,346 @@
+\documentclass[12pt,a4paper]{article}
+%\usepackage{ctex}
+\usepackage{amsmath,amscd,amsbsy,amssymb,latexsym,url,bm,amsthm}
+\usepackage{epsfig,graphicx,subfigure}
+\usepackage{enumitem,balance}
+\usepackage{wrapfig}
+\usepackage{mathrsfs,euscript}
+\usepackage[x11names,svgnames,dvipsnames]{xcolor}
+\usepackage{hyperref}
+\usepackage[vlined,ruled,commentsnumbered,linesnumbered]{algorithm2e}
+\usepackage{listings}
+\usepackage{multicol}
+%\usepackage{fontspec}
+
+\renewcommand{\listalgorithmcfname}{List of Algorithms}
+\renewcommand{\algorithmcfname}{Alg.}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{exercise}{Exercise}
+\newtheorem*{solution}{Solution}
+\newtheorem{definition}{Definition}
+\theoremstyle{definition}
+
+
+%\numberwithin{equation}{section}
+%\numberwithin{figure}{section}
+
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+
+\newcommand{\postscript}[2]
+ {\setlength{\epsfxsize}{#2\hsize}
+  \centerline{\epsfbox{#1}}}
+
+\renewcommand{\baselinestretch}{1.0}
+
+\setlength{\oddsidemargin}{-0.365in}
+\setlength{\evensidemargin}{-0.365in}
+\setlength{\topmargin}{-0.3in}
+\setlength{\headheight}{0in}
+\setlength{\headsep}{0in}
+\setlength{\textheight}{10.1in}
+\setlength{\textwidth}{7in}
+\makeatletter \renewenvironment{proof}[1][Proof] {\par\pushQED{\qed}\normalfont\topsep6\p@\@plus6\p@\relax\trivlist\item[\hskip\labelsep\bfseries#1\@addpunct{.}]\ignorespaces}{\popQED\endtrivlist\@endpefalse} \makeatother
+\makeatletter
+\renewenvironment{solution}[1][Solution] {\par\pushQED{\qed}\normalfont\topsep6\p@\@plus6\p@\relax\trivlist\item[\hskip\labelsep\bfseries#1\@addpunct{.}]\ignorespaces}{\popQED\endtrivlist\@endpefalse} \makeatother
+
+
+\definecolor{codegreen}{rgb}{0.44,0.68,0.28}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.96,0.96,0.96}
+
+\lstset{
+language=C++,
+frame=shadowbox,
+keywordstyle = \color{blue}\bfseries,
+commentstyle=\color{codegreen},
+tabsize = 4,
+backgroundcolor=\color{backcolour},
+numbers=left,
+numbersep=5pt,
+breaklines=true,
+emph = {int,float,double,char},emphstyle=\color{orange},
+emph ={[2]const, typedef},emphstyle = {[2]\color{red}} }
+
+
+
+\begin{document}
+\noindent
+
+%========================================================================
+\noindent\framebox[\linewidth]{\shortstack[c]{
+\Large{\textbf{Lab02-Sorting and Searching}}\vspace{1mm}\\
+VE281 - Data Structures and Algorithms, Xiaofeng Gao, TA: Li Ma, Autumn 2019}}
+%CS26019 - Algorithm Design and Analysis, Xiaofeng Gao, Autumn 2019}}
+\begin{center}
+\footnotesize{\color{red}$*$ Please upload your assignment to website. Contact webmaster for any questions.}
+
+\footnotesize{\color{blue}$*$ Name: Sun Yiwen  \quad Student ID: 517370910213 \quad Email: sunyw99@sjtu.edu.cn}
+\end{center}
+
+
+\begin{enumerate}
+
+\item \textbf{Cocktail Sort.} Consider the pseudo code of a sorting algorithm shown in Alg.~\ref{Alg-Cocktail}, which is called \emph{Cocktail Sort}, then answer the following questions.
+
+
+\begin{minipage}[t]{0.4\textwidth}
+\begin{enumerate}
+\item What is the minimum number of element comparisons performed by the algorithm? When is this minimum achieved?
+\item What is the maximum number of element comparisons performed by the algorithm? When is this maximum achieved?
+\item Express the running time of the algorithm in terms of the $O$ notation.
+\item Can the running time of the algorithm be expressed in terms of the $\Theta$ notation? Explain.
+\end{enumerate}
+\end{minipage}
+\hspace{2mm}
+\begin{minipage}[t]{0.5\textwidth}
+\begin{algorithm}[H]
+		\caption{CocktailSort($a$[$\cdot$], $n$)} \label{Alg-Cocktail}
+		\KwIn {an array $a$, the length of array $n$}
+		\For {$i=0; i<n-1; i++$}
+		{
+			$bFlag \leftarrow true$;
+			
+			\For {$j=i;j<n-i-1;j++$}
+			{
+				\If {$a[j]>a[j+1]$}
+				{
+					swap($a[j]$, $a[j+1]$)\;
+					$bFlag \leftarrow false$;
+				}
+			}
+			
+			\If {bFlag}
+			{
+				break;
+			}
+			
+			$bFlag \leftarrow true$;			
+			
+			\For {$j=n-i-1;j>i;j--$}
+			{
+				\If {$a[j]<a[j-1]$}
+				{
+					swap($a[j]$, $a[j-1]$)\;
+					$bFlag \leftarrow false$;
+				}
+			}
+			\If {bFlag}
+			{
+				break;
+			}
+		}
+\end{algorithm}
+\end{minipage}
+
+%\end{multicols}
+\begin{solution}
+\begin{enumerate}
+\item
+The minimum number of element comparisons performed by the algorithm is $n-1$ times. This is achieved when the input array is already sorted in ascending order.
+\item
+The maximum number of element comparisons performed by the algorithm is $\dfrac{n(n-1)}{2}$ times. This is achieved when the input array is sorted in descending order.
+\item
+Suppose $T(n)=\dfrac{n(n-1)}{2}$, then if we pick constants $c$ and $n_0$ so that for any $n>n_0$, $T(n)\leq c\cdot n^2$, then we can prove $T(n)=O(n^2)$. We choose $c=\dfrac{1}{2}$ and $n_0=1$, then for any $n>1$, $T(n)=\dfrac{n^2}{2}-\dfrac{n}{2}<\dfrac{n^2}{2}$. Therefore, the worst-case running time of this algorithm is $O(n^2)$.\\
+For average case time complexity, we know that the above cocktail sort is different from the bubble sort. Instead of going through the whole array no matter what, the cocktail sort will exit the program as soon as the array is in expected order. However, each for loop is still dependent on the size of $n*n$. Therefore, the average-case time complexity is also $O(n^2)$.
+\item
+As explained in (a), the minimum number of element comparisons performed by the algorithm is $n-1$ times. Therefore, the worst-case running time of this algorithm is also $\Omega(n)$. $O$ notation and $\Omega$ notation don't coincide, so no, the running time of the algorithm can not be expressed in terms of the $\Theta$ notation.
+\end{enumerate}
+\end{solution}
+
+\item \textbf{In-Place.} In place means an algorithm requires $O(1)$ additional memory, including the stack space used in recursive calls. Frankly speaking, even for a same algorithm, different implementation methods bring different in-place characteristics. Taking \emph{Binary Search} as an example, we give two kinds of implementation pseudo codes shown in Alg.~\ref{Alg-RecursiveBS} and Alg.~\ref{Alg-NonRecursiveBS}. Please analyze whether they are in place.
+    
+    Next, please give one similar example regarding other algorithms you know to illustrate such phenomenon.
+
+\item  \textbf{Master Theorem}.
+
+\begin{definition}[Matrix Multiplication]
+The product of two $n \times n$ matrices $X$ and $Y$ is a third $n \times n$ matrix $Z = XY$, with $(i,j)$th entry
+$$Z_{ij}=\sum_{k=1}^{n}X_{ik}Y_{kj}.$$
+\end{definition}
+$Z_{ij}$ is the dot product of the $i$th row of $X$ with $j$th column of $Y$. The preceding formula implies an $O(n^3)$ algorithm for matrix multiplication.
+
+\begin{minipage}[t]{0.49\textwidth}
+\begin{algorithm}[H]
+	\BlankLine
+	\SetKwInOut{Input}{Input}
+	\SetKwInOut{Output}{Output}
+	\caption{BinSearch($a[\cdot]$, $x$, $low$, $high$)} \label{Alg-RecursiveBS}
+	\Input{a sorted array $a$ of $n$ elements, an integer $x$, first index $low$, last index $high$}
+	\Output{first index of key $x$ in $a$, $-1$ if not found}
+	\BlankLine
+	\If{$high < low$}{
+	\Return{-1};
+	}
+    $mid \leftarrow low +((high - low) / 2)$;
+    
+    
+    \uIf{$a[mid] > x$}{
+	$mid \leftarrow$ {$\text{BinSearch}(a,x,low, mid - 1)$};
+	}
+    \uElseIf{$a[mid] < x$}{
+    $mid \leftarrow$ {$\text{BinSearch}(a,x,mid+1, high)$};
+    }
+   \Else {
+    \Return{$mid$};
+    }
+\end{algorithm}
+\end{minipage}
+\begin{minipage}[t]{0.455\textwidth}
+\begin{algorithm}[H]
+\BlankLine
+	\SetKwInOut{Input}{input}
+	\SetKwInOut{Output}{output}
+	\caption{BinSearch($a[\cdot]$, $x$, $low$, $high$)} \label{Alg-NonRecursiveBS}
+	\Input{a sorted array $a$ of $n$ elements, an integer $x$, first index $low$, last index $high$}	\Output{first index of key $x$ in $a$, $-1$ if not found}
+	\BlankLine	
+	\While{$low \leq high$}{
+	$mid \leftarrow low + ((high - low) / 2)$;
+	
+	\uIf{$a[mid] > x$}
+	{
+		$high \leftarrow mid - 1$;
+	}
+	\uElseIf{$a[mid] < x$}{
+	    $low \leftarrow mid + 1$;
+	}
+	\Else{
+	    \Return{$mid$};
+	}
+	}
+	\Return{-1};
+\end{algorithm}\end{minipage}
+\begin{solution}
+Algorithm 2 is recursive. We have to consider stack space, which has the space complexity of $O(\log n)$. Therefore, Alg.~\ref{Alg-RecursiveBS} is not in place.\\
+Algorithm 3 uses $mid$, $high$, $low$ three variables to store data no matter the input size. Its space complexity is $O(1)$. Therefore, Alg.~\ref{Alg-NonRecursiveBS} is in place.\\
+A similar example would be the algorithm which calculates the factorial of a non-negative integer $n$. We can implement the algorithm in an recursive or a non-recursive style. The corresponding pseudo codes are shown in Alg.~\ref{Alg-RecursiveF} and Alg.~\ref{Alg-NonRecursiveF}.\\
+Algorithm 4 is recursive. We have to consider stack space and thus the space complexity is $O(n)$. Therefore, Alg.~\ref{Alg-RecursiveF} is not in place.\\
+Algotirhm 5 uses one variable $res$ to store data no matter the input size. Its space complexity is $O(1)$. Therefore, Alg.~\ref{Alg-NonRecursiveF} is in place.
+
+\end{solution}
+
+
+
+
+
+
+
+
+
+
+
+\begin{minipage}[t]{0.49\textwidth}
+\begin{algorithm}[H]
+	\BlankLine
+	\SetKwInOut{Input}{Input}
+	\SetKwInOut{Output}{Output}
+	\caption{Factorial($n$)} \label{Alg-RecursiveF}
+	\Input{a non-negative integer $n$}
+	\Output{$n!$}
+	\BlankLine 
+    \uIf{$n\leq 1$}{
+	\Return{1};
+	}
+   \Else {
+    \Return{$n*Factorial(n-1)$};
+    }
+\end{algorithm}
+\end{minipage}
+\begin{minipage}[t]{0.455\textwidth}
+\begin{algorithm}[H]
+\BlankLine
+	\SetKwInOut{Input}{input}
+	\SetKwInOut{Output}{output}
+	\caption{Factorial($n$)} \label{Alg-NonRecursiveF}
+	\Input{a non-negative integer $n$}
+	\Output{$n!$}
+	\BlankLine	
+	\uIf{$n\leq 1$}{
+	\Return 1;
+	}
+	$res\leftarrow 1$;\\
+	\For{i from 1 to n}{
+	$res\leftarrow res*i$;
+	}
+	\Return{res};
+\end{algorithm}
+\end{minipage}
+
+
+
+
+
+
+
+In 1969, the German mathematician Volker Strassen announced a siginificantly more efficient algorithm, based upon divide-and-conquer. Matrix Multiplication can be performed blockwise. To see what this means, carve $X$ into four $\frac{n}{2} \times \frac{n}{2}$ blocks, and also $Y$:
+\begin{displaymath}
+X=
+\left(\begin{array}{c|c}
+A & B \\
+\hline
+C & D \end{array}\right), \quad
+Y=\left(\begin{array}{c|c}
+E & F \\
+\hline
+G & H \end{array}\right).
+ \end{displaymath}
+
+Then their product can be expressed in terms of these blocks and is exactly as if the blocks were single elements.
+
+ \begin{displaymath}
+ XY=
+\left(\begin{array}{c|c}
+A & B \\
+\hline
+C & D \end{array}\right)
+\left(\begin{array}{c|c}
+E & F \\
+\hline
+G & H \end{array}\right)
+=
+\left(\begin{array}{c|c}
+AE+BG & AF+BH \\
+\hline
+CE+DG & CF+DH \end{array}\right).
+ \end{displaymath}
+
+To compute the size-$n$ product $XY$, recursively compute eight size-$\frac{n}{2}$ products $AE$,  $BG$, $AF$, $BH$, $CE$, $DG$, $CF$, $DH$ and then do a few additions.
+
+\begin{enumerate}
+\item Write down the recurrence function of the above method and compute its running time by Master Theorem.
+
+\begin{solution}
+The recurrence function is $T(n)=8T(\dfrac{n}{2})+O(n^2)$. Using the Master Theorem, we have $a=8$, $b=2$, $d=2$, and $a>b^d$. Therefore, $T(n)=O(n^{\log_ba})=O(n^3)$.
+\end{solution}
+
+\item The efficiency can be further improved. It turns out $XY$ can be computed from just seven $\frac{n}{2}\times \frac{n}{2}$ subproblems.
+
+\begin{displaymath}
+ XY=
+\left(\begin{array}{c|c}
+P_{5}+P_{4}-P_{2}+P_{6} & P_{1}+P_{2} \\
+\hline
+P_{3}+P_{4} & P_{1}+P_{5}-P_{3}-P_{7} \end{array}\right),
+\end{displaymath}
+where
+\begin{align*}
+P_{1}&=A(F-H), \qquad P_{2}=(A+B)H, \qquad P_{3}=(C+D)E, \qquad P_{4}=D(G-E),\\
+P_{5}&=(A+D)(E+H),\qquad P_{6}=(B-D)(G+H),\qquad P_{7}=(A-C)(E+H).
+\end{align*}
+
+Write the corresponding recurrence function and compute the new running time.
+
+\begin{solution}
+The recurrence function is $T(n)=7T(\dfrac{n}{2})+O(n^2)$. Using the Master Theorem, we have $a=7$, $b=2$, $d=2$, and $a>b^d$. Therefore, $T(n)=O(n^{\log_ba})=O(n^{\log_27})$.
+\end{solution}
+
+\end{enumerate}
+
+
+\end{enumerate}
+
+%========================================================================
+\end{document}

@@ -1,0 +1,386 @@
+\documentclass[12pt,a4paper]{article}
+%\usepackage{ctex}
+\usepackage{amsmath,amscd,amsbsy,amssymb,latexsym,url,bm,amsthm}
+\usepackage{epsfig,graphicx,subfigure}
+\usepackage{enumitem,balance}
+\usepackage{wrapfig}
+\usepackage{mathrsfs,euscript}
+\usepackage[x11names,svgnames,dvipsnames]{xcolor}
+\usepackage{hyperref}
+\usepackage[vlined,ruled,commentsnumbered,linesnumbered]{algorithm2e}
+\usepackage{listings}
+\usepackage{multicol}
+%\usepackage{fontspec}
+
+\renewcommand{\listalgorithmcfname}{List of Algorithms}
+\renewcommand{\algorithmcfname}{Alg.}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{exercise}{Exercise}
+\newtheorem*{solution}{Solution}
+\newtheorem{definition}{Definition}
+\theoremstyle{definition}
+
+
+%\numberwithin{equation}{section}
+%\numberwithin{figure}{section}
+
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+
+\newcommand{\postscript}[2]
+ {\setlength{\epsfxsize}{#2\hsize}
+  \centerline{\epsfbox{#1}}}
+
+\renewcommand{\baselinestretch}{1.0}
+
+\setlength{\oddsidemargin}{-0.365in}
+\setlength{\evensidemargin}{-0.365in}
+\setlength{\topmargin}{-0.3in}
+\setlength{\headheight}{0in}
+\setlength{\headsep}{0in}
+\setlength{\textheight}{10.1in}
+\setlength{\textwidth}{7in}
+\makeatletter \renewenvironment{proof}[1][Proof] {\par\pushQED{\qed}\normalfont\topsep6\p@\@plus6\p@\relax\trivlist\item[\hskip\labelsep\bfseries#1\@addpunct{.}]\ignorespaces}{\popQED\endtrivlist\@endpefalse} \makeatother
+\makeatletter
+\renewenvironment{solution}[1][Solution] {\par\pushQED{\qed}\normalfont\topsep6\p@\@plus6\p@\relax\trivlist\item[\hskip\labelsep\bfseries#1\@addpunct{.}]\ignorespaces}{\popQED\endtrivlist\@endpefalse} \makeatother
+
+
+\definecolor{codegreen}{rgb}{0.44,0.68,0.28}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.96,0.96,0.96}
+
+\lstset{
+language=C++,
+frame=shadowbox,
+keywordstyle = \color{blue}\bfseries,
+commentstyle=\color{codegreen},
+tabsize = 4,
+backgroundcolor=\color{backcolour},
+numbers=left,
+numbersep=5pt,
+breaklines=true,
+emph = {int,float,double,char},emphstyle=\color{orange},
+emph ={[2]const, typedef},emphstyle = {[2]\color{red}} }
+
+
+
+\begin{document}
+\noindent
+
+%========================================================================
+\noindent\framebox[\linewidth]{\shortstack[c]{
+\Large{\textbf{Lab06-Heaps and BST}}\vspace{1mm}\\
+VE281 - Data Structures and Algorithms, Xiaofeng Gao, TA: Li Ma, Autumn 2019}}
+%CS26019 - Algorithm Design and Analysis, Xiaofeng Gao, Autumn 2019}}
+\begin{center}
+\footnotesize{\color{red}$*$ Please upload your assignment to website. Contact webmaster for any questions.}
+
+\footnotesize{\color{blue}$*$ Name: Sun Yiwen  \quad Student ID: 517370910213 \quad Email: sunyw99@sjtu.edu.cn}
+\end{center}
+
+
+\begin{enumerate}
+
+\item \textbf{D-ary Heap.} D-ary heap is similar to binary heap, but (with one possible exception) each non-leaf node of d-ary heap has $d$ children, not just $2$ children.
+
+\begin{enumerate}
+\item How to represent a d-ary heap in an array?
+\item What is the height of the d-ary heap with $n$ elements? Please use $n$ and $d$ to show.
+\item Please give the implementation of insertion on the min heap of d-ary heap, and show the time complexity with $n$ and $d$.
+\end{enumerate}
+
+\begin{lstlisting}[language=C++]
+#ifndef D_ARY_HEAP_H
+#define D_ARY_HEAP_H
+
+#include <functional>
+#include <vector>
+#include <algorithm>
+
+class d_ary_heap {
+public:
+	d_ary_heap(int d);
+	~d_ary_heap() {}
+	void enqueue(int k);
+private:
+	int d;
+	std::vector<int> data;
+	void swap(int& a, int& b);
+	void perculateUp(int id);
+};
+
+d_ary_heap::d_ary_heap(int d) :d(d)
+{
+}
+
+void d_ary_heap::swap(int& a, int& b) {
+	int temp;
+	temp = a;
+	a = b;
+	b = temp;
+}
+
+void d_ary_heap::perculateUp(int id) {
+	while (id > 0 && data[id] < data[(id - 1) / d]) {
+		swap(data[(id - 1) / d], data[id]);
+		id = (id - 1) / d;
+	}
+}
+
+void d_ary_heap::enqueue(int k) {
+	data.push_back(k);
+	perculateUp(data.size() - 1);
+}
+
+#endif//D_ARY_HEAP_H
+\end{lstlisting}
+
+\begin{solution}
+\begin{enumerate}
+\item
+Same as binary heap implementation as an array, we can store the elements of a d-ary heap in an array in the order produced by a level order traversal.
+\item
+The height of a d-ary heap with n elements is $\lceil\log_d(n+1)\rceil-1$ or $\lfloor\log_dn\rfloor$.
+\item
+The time complexity is $O(\log_dn)$.
+\end{enumerate}
+\end{solution}
+
+\item \textbf{Median Maintenance.} Input a sequence of numbers $x_1,x_2...,x_n$, one-by-one. At each time step $i$, output the median of $x_1,x_2...,x_i$. How to do this with $O(\log i)$ time at each step $i$? Show the implementation.
+
+\begin{lstlisting}[language=C++]
+#ifndef BINARY_HEAP_H
+#define BINARY_HEAP_H
+
+#include <functional>
+#include <vector>
+#include <algorithm>
+
+// OVERVIEW: A specialized version of the 'heap' ADT implemented as a binary
+//           heap.
+template<typename TYPE, typename COMP = std::less<TYPE> >
+class binary_heap {
+public:
+	typedef unsigned size_type;
+	~binary_heap() {}
+	binary_heap(COMP comp = COMP());
+	void enqueue(const TYPE& val);
+	TYPE dequeue_min();
+	const TYPE& get_min() const;
+	size_type size() const;
+	bool empty() const;
+private:
+	std::vector<TYPE> data;
+	COMP compare;
+private:
+	void swap(TYPE& a, TYPE& b);
+	void perculateUp(int id);
+	void perculateDown(int id);
+};
+
+template<typename TYPE, typename COMP>
+void binary_heap<TYPE, COMP>::swap(TYPE& a, TYPE& b) {
+	TYPE temp;
+	temp = a;
+	a = b;
+	b = temp;
+}
+
+template<typename TYPE, typename COMP>
+void binary_heap<TYPE, COMP>::perculateUp(int id) {
+	while (id > 0 && compare(this->data[id], this->data[(id + 1) / 2 - 1])) {
+		swap(this->data[(id + 1) / 2 - 1], this->data[id]);
+		id = (id + 1) / 2 - 1;
+	}
+}
+
+template<typename TYPE, typename COMP>
+void binary_heap<TYPE, COMP>::perculateDown(int id) {
+	unsigned int j;
+	for (j = 2 * (id + 1) - 1; j < this->data.size(); j = 2 * (id + 1) - 1) {
+		if (j < this->data.size() - 1 && compare(this->data[j + 1], this->data[j])) j++;
+		if (!compare(this->data[j], this->data[id])) break;
+		swap(this->data[id], this->data[j]);
+		id = j;
+	}
+}
+
+template<typename TYPE, typename COMP>
+binary_heap<TYPE, COMP> ::binary_heap(COMP comp) {
+	compare = comp;
+}
+
+template<typename TYPE, typename COMP>
+void binary_heap<TYPE, COMP> ::enqueue(const TYPE& val) {
+	this->data.push_back(val);
+	perculateUp(this->data.size() - 1);
+}
+
+template<typename TYPE, typename COMP>
+TYPE binary_heap<TYPE, COMP> ::dequeue_min() {
+	TYPE min;
+	min = this->data[0];
+	swap(this->data[0], this->data[this->data.size() - 1]);
+	this->data.pop_back();
+	perculateDown(0);
+	return min;
+}
+
+template<typename TYPE, typename COMP>
+const TYPE& binary_heap<TYPE, COMP> ::get_min() const {
+	return this->data[0];
+}
+
+template<typename TYPE, typename COMP>
+bool binary_heap<TYPE, COMP> ::empty() const {
+	return this->data.empty();
+}
+
+template<typename TYPE, typename COMP>
+unsigned binary_heap<TYPE, COMP> ::size() const {
+	return this->data.size();
+}
+
+#endif //BINARY_HEAP_H
+\end{lstlisting}
+
+\begin{lstlisting}[language=C++]
+#include <iostream>
+#include <string>
+#include "binary_heap.h"
+using namespace std;
+
+struct compare_t
+{
+	bool operator()(int a, int b) const
+	{
+		return a > b;
+	}
+};
+
+int main() {
+	string input;
+	int newInt, count, current_mean;
+	float new_mean;
+	binary_heap<int, compare_t>* data1 = new binary_heap<int, compare_t>;
+	binary_heap<int>* data2 = new binary_heap<int>;
+	cin >> input;
+	newInt = stoi(input);
+	data1->enqueue(newInt);
+	count = 1;
+	cout << "mean: " << newInt << " " << endl;
+	while (cin >> input) {
+		if (input == "q") break;
+		newInt = stoi(input);
+		if (count % 2 == 1) {
+			current_mean = data1->dequeue_min();
+			if (newInt < current_mean) {
+				data1->enqueue(newInt);
+				data2->enqueue(current_mean);
+				new_mean = ((float)current_mean + (float)data1->get_min()) / 2;
+			}
+			else {
+				data2->enqueue(newInt);
+				data1->enqueue(current_mean);
+				new_mean = ((float)data1->get_min() + (float)data2->get_min()) / 2;
+			}
+		}
+		else {
+			current_mean = data2->dequeue_min();
+			if (newInt < current_mean) {
+				data1->enqueue(newInt);
+				data2->enqueue(current_mean);
+				new_mean = data1->get_min();
+			}
+			else {
+				data2->enqueue(newInt);
+				data1->enqueue(current_mean);
+				new_mean = data1->get_min();
+			}
+		}
+		count++;
+		cout << "mean: " << new_mean << " " << endl;
+	}
+	return 0;
+}
+\end{lstlisting}
+
+\item  \textbf{BST}. Two elements of a binary search tree are swapped by mistake. Recover the tree without changing its structure. Implement with a constant space.
+
+\begin{lstlisting}[language=C++]
+/**
+ * Definition for binary tree
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+
+void inorder(TreeNode* root, TreeNode*& pre, TreeNode*& first, TreeNode*& second) {
+	if (!root) return;
+	inorder(root->left, pre, first, second);
+	if (!pre) pre = root;
+	else {
+		if (pre->val > root->val) {
+			if (!first) first = pre;
+			second = root;
+		}
+		pre = root;
+	}
+	inorder(root->right, pre, first, second);
+} 
+
+void recoverTree(TreeNode *root)
+{
+	TreeNode* pre = NULL, * first = NULL, * second = NULL;
+	int temp;
+	inorder(root, pre, first, second);
+	temp = first->val;
+	first->val = second->val;
+	second->val = temp;
+}
+\end{lstlisting}
+
+%\begin{solution}
+%	Uncomment this block to write your solution.
+%\end{solution}
+
+\item  \textbf{BST}. Input an integer array, then determine whether the array is the result of the post-order traversal of a binary search tree. If yes, return Yes; otherwise, return No. Suppose that any two numbers of the input array are different from each other. Show the implementation.
+
+\begin{lstlisting}[language=C++]
+// Input: an integer array
+// Output: yes or no
+bool verifySquenceOfBST(vector<int> sequence)
+{
+	int root, i, j;
+	vector<int> temp;
+	vector<int> right;
+	if (sequence.size() == 0 || sequence.size() == 1) return true;
+	root = sequence[sequence.size() - 1];
+	sequence.pop_back();
+	i = sequence.size() - 1;
+	while (i >= 0 && sequence[i] > root) {
+		temp.push_back(sequence[i]);
+		sequence.pop_back();
+		i--;
+	}
+	for (j = temp.size() - 1; j >= 0; j--) right.push_back(temp[j]);
+	while (i >= 0 && sequence[i] < root) i--;
+	if (i != -1) return false;
+	else return (verifySquenceOfBST(sequence) && verifySquenceOfBST(right));
+}
+\end{lstlisting}
+
+%\begin{solution}
+%	Uncomment this block to write your solution.
+%\end{solution}
+
+\end{enumerate}
+
+%========================================================================
+\end{document}

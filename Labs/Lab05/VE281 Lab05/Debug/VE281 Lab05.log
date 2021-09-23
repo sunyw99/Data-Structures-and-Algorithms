@@ -1,0 +1,34 @@
+﻿  main.cpp
+D:\Storage\UMSJTU JI\courses\7\VE281\Labs\Lab05\VE281 Lab05\unsorted_heap.h(74,20): error C2676:  二进制“>”:“_Ty”不定义该运算符或到预定义运算符可接收的类型的转换
+D:\Storage\UMSJTU JI\courses\7\VE281\Labs\Lab05\VE281 Lab05\unsorted_heap.h(74,20): error C2676:         with
+D:\Storage\UMSJTU JI\courses\7\VE281\Labs\Lab05\VE281 Lab05\unsorted_heap.h(74,20): error C2676:         [
+D:\Storage\UMSJTU JI\courses\7\VE281\Labs\Lab05\VE281 Lab05\unsorted_heap.h(74,20): error C2676:             _Ty=point
+D:\Storage\UMSJTU JI\courses\7\VE281\Labs\Lab05\VE281 Lab05\unsorted_heap.h(74,20): error C2676:         ]
+D:\Storage\UMSJTU JI\courses\7\VE281\Labs\Lab05\VE281 Lab05\unsorted_heap.h(67): message :  在编译 类 模板 成员函数“TYPE unsorted_heap<TYPE,std::less<TYPE>>::dequeue_min(void)”时
+D:\Storage\UMSJTU JI\courses\7\VE281\Labs\Lab05\VE281 Lab05\unsorted_heap.h(67): message :         with
+D:\Storage\UMSJTU JI\courses\7\VE281\Labs\Lab05\VE281 Lab05\unsorted_heap.h(67): message :         [
+D:\Storage\UMSJTU JI\courses\7\VE281\Labs\Lab05\VE281 Lab05\unsorted_heap.h(67): message :             TYPE=point
+D:\Storage\UMSJTU JI\courses\7\VE281\Labs\Lab05\VE281 Lab05\unsorted_heap.h(67): message :         ]
+D:\Storage\UMSJTU JI\courses\7\VE281\Labs\Lab05\VE281 Lab05\main.cpp(80): message :  查看对正在编译的函数 模板 实例化“TYPE unsorted_heap<TYPE,std::less<TYPE>>::dequeue_min(void)”的引用
+D:\Storage\UMSJTU JI\courses\7\VE281\Labs\Lab05\VE281 Lab05\main.cpp(80): message :         with
+D:\Storage\UMSJTU JI\courses\7\VE281\Labs\Lab05\VE281 Lab05\main.cpp(80): message :         [
+D:\Storage\UMSJTU JI\courses\7\VE281\Labs\Lab05\VE281 Lab05\main.cpp(80): message :             TYPE=point
+D:\Storage\UMSJTU JI\courses\7\VE281\Labs\Lab05\VE281 Lab05\main.cpp(80): message :         ]
+D:\Storage\UMSJTU JI\courses\7\VE281\Labs\Lab05\VE281 Lab05\main.cpp(75): message :  查看对正在编译的 类 模板 实例化“unsorted_heap<point,std::less<TYPE>>”的引用
+D:\Storage\UMSJTU JI\courses\7\VE281\Labs\Lab05\VE281 Lab05\main.cpp(75): message :         with
+D:\Storage\UMSJTU JI\courses\7\VE281\Labs\Lab05\VE281 Lab05\main.cpp(75): message :         [
+D:\Storage\UMSJTU JI\courses\7\VE281\Labs\Lab05\VE281 Lab05\main.cpp(75): message :             TYPE=point
+D:\Storage\UMSJTU JI\courses\7\VE281\Labs\Lab05\VE281 Lab05\main.cpp(75): message :         ]
+D:\Storage\UMSJTU JI\courses\7\VE281\Labs\Lab05\VE281 Lab05\unsorted_heap.h(91,20): error C2676:  二进制“>”:“const _Ty”不定义该运算符或到预定义运算符可接收的类型的转换
+D:\Storage\UMSJTU JI\courses\7\VE281\Labs\Lab05\VE281 Lab05\unsorted_heap.h(91,20): error C2676:         with
+D:\Storage\UMSJTU JI\courses\7\VE281\Labs\Lab05\VE281 Lab05\unsorted_heap.h(91,20): error C2676:         [
+D:\Storage\UMSJTU JI\courses\7\VE281\Labs\Lab05\VE281 Lab05\unsorted_heap.h(91,20): error C2676:             _Ty=point
+D:\Storage\UMSJTU JI\courses\7\VE281\Labs\Lab05\VE281 Lab05\unsorted_heap.h(91,20): error C2676:         ]
+  test_heap.cpp
+  正在生成代码...
+D:\Storage\UMSJTU JI\courses\7\VE281\Labs\Lab05\VE281 Lab05\unsorted_heap.h(85): message :  在编译 类 模板 成员函数“const TYPE &unsorted_heap<TYPE,std::less<TYPE>>::get_min(void) const”时
+D:\Storage\UMSJTU JI\courses\7\VE281\Labs\Lab05\VE281 Lab05\unsorted_heap.h(85): message :         with
+D:\Storage\UMSJTU JI\courses\7\VE281\Labs\Lab05\VE281 Lab05\unsorted_heap.h(85): message :         [
+D:\Storage\UMSJTU JI\courses\7\VE281\Labs\Lab05\VE281 Lab05\unsorted_heap.h(85): message :             TYPE=point
+D:\Storage\UMSJTU JI\courses\7\VE281\Labs\Lab05\VE281 Lab05\unsorted_heap.h(85): message :         ]
+D:\Storage\UMSJTU JI\courses\7\VE281\Labs\Lab05\VE281 Lab05\unsorted_heap.h(85): message : D:\Storage\UMSJTU JI\courses\7\VE281\Labs\Lab05\VE281 Lab05\unsorted_heap.h(93) : warning C4172: 返回局部变量或临时变量的地址: min
